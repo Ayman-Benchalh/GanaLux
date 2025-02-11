@@ -1,0 +1,16 @@
+ Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // User who placed the order
+            $table->foreignId('coupon_id')->nullable()->constrained()->onDelete('set null'); // Coupon used (if any)
+            $table->decimal('total_price', 8, 2);
+            $table->string('status')->default('pending');
+            $table->timestamps();
+        });
+        Schema::create('order_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
+            $table->decimal('price', 8, 2);
+            $table->timestamps(); // Ensures created_at and updated_at are present
+        });
